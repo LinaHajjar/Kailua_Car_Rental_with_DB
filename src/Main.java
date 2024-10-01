@@ -1,4 +1,5 @@
 import java.io.*;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -7,7 +8,34 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+
+    public static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    public static final String DATABASE_URL = "jdbc:mysql://localhost:3306/KailuaCarRental";
+    public static Connection con;
+
+    public static void main(String[] args) throws IOException, SQLException {
+
+        try {
+            con = DriverManager.getConnection(DATABASE_URL,"root","Ma2404ro@@@@");
+
+            //*** now that the connection is established we do the query
+            Statement s = con.createStatement();
+
+            /*ResultSet rs = s.executeQuery("SELECT vendor_name,  vendor_city  from vendors where default_account_number > '500'");
+
+            // if the resultset is not empty, we position to first row and display first field
+            if (rs != null)
+                while (rs.next()) {
+                    System.out.println("Data for name: " + rs.getString("vendor_name"));
+                    System.out.printf("\n%s  %s\n ","Data for City: ",rs.getString("vendor_city"));
+                }*/
+            s.close();
+            con.close();
+        }catch (SQLException sqlex) {
+            System.out.println(sqlex.getMessage());
+            System.exit(1);  // terminate program
+        }
+
 
         Scanner scan = new Scanner(new File("src/Cars List"));
         Scanner input = new Scanner(System.in);
